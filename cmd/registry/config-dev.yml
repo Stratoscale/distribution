@@ -29,7 +29,7 @@ storage:
         uploadpurging:
             enabled: false
 http:
-    addr: :5000
+    addr: :1818
     debug:
         addr: localhost:5001
     headers:
