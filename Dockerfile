@@ -14,5 +14,5 @@ RUN make PREFIX=/go clean binaries
 
 VOLUME ["/var/lib/registry"]
 EXPOSE 1818
-ENTRYPOINT ["registry"]
-CMD ["serve", "/etc/docker/registry/config.yml"]
+RUN touch /var/log/registry.log
+ENTRYPOINT ["/bin/sh", "-c", "registry serve /etc/docker/registry/config.yml > /var/log/registry.log 2>&1"]
