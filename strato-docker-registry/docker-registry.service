@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Registry
+After=docker.service
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/docker-service-stop.sh docker-registry.yml
+ExecStart=/usr/bin/docker-service-start.sh docker-registry.yml docker-registry.log
+ExecStop=/usr/bin/docker-service-stop.sh docker-registry.yml
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
