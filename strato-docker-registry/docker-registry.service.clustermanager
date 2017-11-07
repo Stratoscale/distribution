@@ -1,1 +1,0 @@
-{"installationType": "controller", "monitoring_command": "/usr/bin/test_dockerregistry > /dev/null 2>&1", "watchdog_mode":"logical", "group": "API Services"}
