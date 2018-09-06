@@ -5,4 +5,11 @@ services:
     docker-registry:
         image_name: registry
         rpms:
-        - build/rpms
+        - build/rpms/strato-registry-1-0.x86_64.rpm
+
+    docker-registry-readonly:
+        image_name: registry
+        rpms:
+        - build/rpms/strato-registry-readonly-1-0.x86_64.rpm
+
+rpms_dir: build/rpms

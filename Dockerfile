@@ -6,6 +6,7 @@ ENV DOCKER_BUILDTAGS include_oss include_gcs
 WORKDIR $DISTRIBUTION_DIR
 COPY . $DISTRIBUTION_DIR
 COPY cmd/registry/config-dev.yml /etc/docker/registry/config.yml
+COPY cmd/registry/config-read-only.yml /etc/docker/registry/config-read-only.yml
 
 RUN set -ex \
     && apk add --no-cache make git

@@ -1,5 +1,5 @@
-all: build/rpms/strato-registry-1-0.x86_64.rpm
-	docker build .
+all: build/rpms/strato-registry-1-0.x86_64.rpm build/rpms/strato-registry-readonly-1-0.x86_64.rpm
+	skipper build registry
 
 ifeq ($(V),1)
     Q =
@@ -10,7 +10,7 @@ else
 endif
 
 STRATO_REGISTRY_RPMBUILD_ROOT = $(PWD)/build/rpmbuild
-build/rpms/strato-registry-1-0.x86_64.rpm:
+build/rpms/strato-registry-1-0.x86_64.rpm: $(shell find strato-docker-registry/)
 	@echo "RPM      " $@
 	-mkdir -p $(@D)
 	mkdir -p $(STRATO_REGISTRY_RPMBUILD_ROOT)
@@ -18,5 +18,20 @@ build/rpms/strato-registry-1-0.x86_64.rpm:
 	$(Q)cp $(STRATO_REGISTRY_RPMBUILD_ROOT)/RPMS/x86_64/strato-registry*.x86_64.rpm $@
 	$(Q)rm -rf $(STRATO_REGISTRY_RPMBUILD_ROOT)
 
+build/rpms/strato-registry-readonly-1-0.x86_64.rpm: $(shell find strato-docker-registry-readonly/)
+	@echo "RPM      " $@
+	-mkdir -p $(@D)
+	mkdir -p $(STRATO_REGISTRY_RPMBUILD_ROOT)
+	$(Q)TOP=$(PWD) rpmbuild -bb -vv --define "_topdir $(STRATO_REGISTRY_RPMBUILD_ROOT)" strato-docker-registry-readonly/strato-registry-readonly.spec $(SWALLOW_STDOUT)
+	$(Q)cp $(STRATO_REGISTRY_RPMBUILD_ROOT)/RPMS/x86_64/strato-registry-readonly*.x86_64.rpm $@
+	$(Q)rm -rf $(STRATO_REGISTRY_RPMBUILD_ROOT)
+
 clean:
 	$(Q)rm -rf build/
+
+package: all
+	packager pack artifacts.yaml --auto-push
+
+deploy: package
+	python -m packaging_tools.upgrade_manifest_generator artifacts.yaml --dirty
+	upgrade -v $(IP) update_manifest.json

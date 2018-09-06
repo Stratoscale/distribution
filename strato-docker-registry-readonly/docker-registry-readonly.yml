@@ -1,0 +1,9 @@
+docker-registry-readonly:
+  container_name: docker-registry-readonly.service.strato
+  image: docker-registry.service.strato:1818/registry:latest
+  command: ["serve", "/etc/docker/registry/config-read-only.yml"]
+  labels:
+  - com.example.description=Docker Registry ReadOnly
+  net: host
+  volumes:
+  - /mnt/containers/registry:/var/lib/registry:ro

@@ -1,6 +1,6 @@
 registry: rackattack-nas.dc1:5000
 build-container-image: dev-base
-build-container-tag: 2f876de89e68858250e00d45985cc23332ac759f
+build-container-tag: bb2b27463e514aa58cbc6722f832ff3bf078c2df
 
 containers:
     registry: Dockerfile

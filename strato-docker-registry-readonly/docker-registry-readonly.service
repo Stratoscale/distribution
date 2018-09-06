@@ -1,0 +1,13 @@
+[Unit]
+Description=Docker Registry ReadOnly
+After=docker.service
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/docker-service-stop.sh docker-registry-readonly.yml
+ExecStart=/usr/bin/docker-service-start.sh docker-registry-readonly.yml docker-registry-readonly.log
+ExecStop=/usr/bin/docker-service-stop.sh docker-registry-readonly.yml
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
