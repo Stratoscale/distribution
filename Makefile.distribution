@@ -20,3 +20,16 @@ build/rpms/strato-registry-1-0.x86_64.rpm:
 
 clean:
 	$(Q)rm -rf build/
+
+image:
+	skipper build
+
+package: build/rpms/strato-registry-1-0.x86_64.rpm image
+	packager pack artifacts.yaml --auto-push
+
+generate_upgrade_manifest:
+	python -m packaging_tools.upgrade_manifest_generator artifacts.yaml --file build/update_manifest.json --dirty
+
+deploy: package generate_upgrade_manifest
+	upgrade $(IP) build/update_manifest.json -v --timeout=600
+
