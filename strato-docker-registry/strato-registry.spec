@@ -20,6 +20,12 @@ install -pm 644 docker-registry.service %{buildroot}/usr/lib/systemd/system/
 install -d %{buildroot}/etc/stratoscale/clustermanager/services/control/
 install -pm 644 docker-registry.service.clustermanager %{buildroot}/etc/stratoscale/clustermanager/services/control/docker-registry.service
 
+%post
+echo "Cleaning registry folder content"
+rm -rf /mnt/containers/registry/*
+
+
+
 %files
 /usr/lib/systemd/system/docker-registry.service
 /etc/stratoscale/clustermanager/services/control/docker-registry.service
